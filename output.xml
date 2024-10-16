@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.11 on win32)" generated="20241016 10:49:37.998" rpa="false" schemaversion="4">
+<suite id="s1" name="Tasks" source="D:\otomatisasi-inlis\tasks.robot">
+<test id="s1-t1" name="Get JSON Data From API" line="20">
+<kw name="Set Variable" library="BuiltIn">
+<var>${book_id}</var>
+<arg>${BOOK_ID}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20241016 10:49:39.190" level="INFO">${book_id} = 6</msg>
+<status status="PASS" starttime="20241016 10:49:39.190" endtime="20241016 10:49:39.190"/>
+</kw>
+<kw name="Create Session" library="RPA.HTTP">
+<arg>mysession</arg>
+<arg>${API_URL}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20241016 10:49:39.191" level="INFO">Creating Session using : alias=mysession, url=http://103.106.72.182:8770, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20241016 10:49:39.191" endtime="20241016 10:49:39.192"/>
+</kw>
+<kw name="GET On Session" library="RPA.HTTP">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/api/getBookSinopsis/${book_id}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20241016 10:49:39.508" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20241016 10:49:39.192" endtime="20241016 10:49:39.508"/>
+</kw>
+<kw name="Decode Bytes To String" library="String">
+<var>${response_str}</var>
+<arg>${response.content}</arg>
+<arg>encoding=UTF-8</arg>
+<doc>Decodes the given ``bytes`` to a Unicode string using the given ``encoding``.</doc>
+<msg timestamp="20241016 10:49:39.510" level="INFO">${response_str} = {"deskripsi":"The Library of Congress has cataloged the hardcover edition as follows","editor":"Interior design by Ellen R. Sasahara","ilustrator":"bowo tiktok","isbn":"9781451671827","judul":"Design ...</msg>
+<status status="PASS" starttime="20241016 10:49:39.510" endtime="20241016 10:49:39.511"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>Raw Response: ${response_str}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20241016 10:49:39.511" endtime="20241016 10:49:39.513"/>
+</kw>
+<kw name="Replace String" library="String">
+<var>${clean_response}</var>
+<arg>${response_str}</arg>
+<arg>"</arg>
+<arg>\\"</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20241016 10:49:39.515" level="INFO">${clean_response} = {\"deskripsi\":\"The Library of Congress has cataloged the hardcover edition as follows\",\"editor\":\"Interior design by Ellen R. Sasahara\",\"ilustrator\":\"bowo tiktok\",\"isbn\":\"9781451671827\",...</msg>
+<status status="PASS" starttime="20241016 10:49:39.514" endtime="20241016 10:49:39.515"/>
+</kw>
+<kw name="Replace String" library="String">
+<var>${clean_response}</var>
+<arg>${clean_response}</arg>
+<arg>\n</arg>
+<arg>\\n</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20241016 10:49:39.516" level="INFO">${clean_response} = {\"deskripsi\":\"The Library of Congress has cataloged the hardcover edition as follows\",\"editor\":\"Interior design by Ellen R. Sasahara\",\"ilustrator\":\"bowo tiktok\",\"isbn\":\"9781451671827\",...</msg>
+<status status="PASS" starttime="20241016 10:49:39.515" endtime="20241016 10:49:39.516"/>
+</kw>
+<kw name="Replace String" library="String">
+<var>${clean_response}</var>
+<arg>${clean_response}</arg>
+<arg>\r</arg>
+<arg>\\r</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20241016 10:49:39.517" level="INFO">${clean_response} = {\"deskripsi\":\"The Library of Congress has cataloged the hardcover edition as follows\",\"editor\":\"Interior design by Ellen R. Sasahara\",\"ilustrator\":\"bowo tiktok\",\"isbn\":\"9781451671827\",...</msg>
+<status status="PASS" starttime="20241016 10:49:39.517" endtime="20241016 10:49:39.517"/>
+</kw>
+<kw name="Strip String" library="String">
+<var>${clean_response}</var>
+<arg>${clean_response}</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<msg timestamp="20241016 10:49:39.519" level="INFO">${clean_response} = {\"deskripsi\":\"The Library of Congress has cataloged the hardcover edition as follows\",\"editor\":\"Interior design by Ellen R. Sasahara\",\"ilustrator\":\"bowo tiktok\",\"isbn\":\"9781451671827\",...</msg>
+<status status="PASS" starttime="20241016 10:49:39.518" endtime="20241016 10:49:39.519"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>Cleaned Response: ${clean_response}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20241016 10:49:39.520" endtime="20241016 10:49:39.522"/>
+</kw>
+<kw name="Convert To Dictionary">
+<var>${json_data}</var>
+<arg>${clean_response}</arg>
+<kw name="Evaluate" library="BuiltIn">
+<var>${json_data}</var>
+<arg>json.loads('''${json_string}''')</arg>
+<arg>json</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20241016 10:49:39.525" level="INFO">${json_data} = {'deskripsi': 'The Library of Congress has cataloged the hardcover edition as follows', 'editor': 'Interior design by Ellen R. Sasahara', 'ilustrator': 'bowo tiktok', 'isbn': '9781451671827', 'judul':...</msg>
+<status status="PASS" starttime="20241016 10:49:39.524" endtime="20241016 10:49:39.526"/>
+</kw>
+<return>
+<value>${json_data}</value>
+<status status="PASS" starttime="20241016 10:49:39.526" endtime="20241016 10:49:39.526"/>
+</return>
+<msg timestamp="20241016 10:49:39.526" level="INFO">${json_data} = {'deskripsi': 'The Library of Congress has cataloged the hardcover edition as follows', 'editor': 'Interior design by Ellen R. Sasahara', 'ilustrator': 'bowo tiktok', 'isbn': '9781451671827', 'judul':...</msg>
+<status status="PASS" starttime="20241016 10:49:39.523" endtime="20241016 10:49:39.526"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>Full JSON Response: ${json_data}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20241016 10:49:39.527" endtime="20241016 10:49:39.529"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${JUDUL}</arg>
+<arg>${json_data['judul']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.532" level="INFO">${JUDUL} = Design to grow : how Coca-Cola learned to combine scale and agility</msg>
+<status status="PASS" starttime="20241016 10:49:39.530" endtime="20241016 10:49:39.532"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${PENGARANG}</arg>
+<arg>${json_data['pengarang']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.536" level="INFO">${PENGARANG} = Butler; David; John</msg>
+<status status="PASS" starttime="20241016 10:49:39.533" endtime="20241016 10:49:39.536"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${PENERBITAN}</arg>
+<arg>${json_data['penerbitan']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.539" level="INFO">${PENERBITAN} = The Library of Congress has cataloged the hardcover edition as follows</msg>
+<status status="PASS" starttime="20241016 10:49:39.537" endtime="20241016 10:49:39.539"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${DESC}</arg>
+<arg>${json_data['deskripsi']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.542" level="INFO">${DESC} = The Library of Congress has cataloged the hardcover edition as follows</msg>
+<status status="PASS" starttime="20241016 10:49:39.540" endtime="20241016 10:49:39.543"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${ISBN}</arg>
+<arg>${json_data['isbn']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.546" level="INFO">${ISBN} = 9781451671827</msg>
+<status status="PASS" starttime="20241016 10:49:39.543" endtime="20241016 10:49:39.546"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${KOTA}</arg>
+<arg>${json_data['kota']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.550" level="INFO">${KOTA} = Avenue of the Americas, New York</msg>
+<status status="PASS" starttime="20241016 10:49:39.547" endtime="20241016 10:49:39.550"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${TAHUN}</arg>
+<arg>${json_data['tahun']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.553" level="INFO">${TAHUN} = 2015</msg>
+<status status="PASS" starttime="20241016 10:49:39.551" endtime="20241016 10:49:39.553"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${EDITOR}</arg>
+<arg>${json_data['editor']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.557" level="INFO">${EDITOR} = Interior design by Ellen R. Sasahara</msg>
+<status status="PASS" starttime="20241016 10:49:39.554" endtime="20241016 10:49:39.557"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${ILUSTRATOR}</arg>
+<arg>${json_data['ilustrator']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.560" level="INFO">${ILUSTRATOR} = bowo tiktok</msg>
+<status status="PASS" starttime="20241016 10:49:39.558" endtime="20241016 10:49:39.560"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${SINOPSIS}</arg>
+<arg>${json_data['sinopsis']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.564" level="INFO">${SINOPSIS} = earn how the worlds largest beverage brand uses design to grow its busiess by combining the advantages of alarge scale company with the agility of a nimble startup. "From a fledging startup in Nepal. ...</msg>
+<status status="PASS" starttime="20241016 10:49:39.561" endtime="20241016 10:49:39.564"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${KEYWORD}</arg>
+<arg>${json_data['keyword']}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20241016 10:49:39.567" level="INFO">${KEYWORD} = company, nepal</msg>
+<status status="PASS" starttime="20241016 10:49:39.565" endtime="20241016 10:49:39.567"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:39.189" endtime="20241016 10:49:39.568"/>
+</test>
+<test id="s1-t2" name="Otomatisasi Entri Katalog" line="59">
+<kw name="Open Browser" library="RPA.Browser.Selenium">
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20241016 10:49:39.573" level="INFO">Opening browser 'Firefox' to base url 'http://localhost/inlislite3/backend/site/login'.</msg>
+<status status="PASS" starttime="20241016 10:49:39.572" endtime="20241016 10:49:48.611"/>
+</kw>
+<kw name="Login website">
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>id:loginform-username</arg>
+<arg>inlislite</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:48.617" level="INFO">Typing text 'inlislite' into text field 'id:loginform-username'.</msg>
+<status status="PASS" starttime="20241016 10:49:48.615" endtime="20241016 10:49:48.802"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>id:loginform-password</arg>
+<arg>inlislite=</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:48.803" level="INFO">Typing text 'inlislite=' into text field 'id:loginform-password'.</msg>
+<status status="PASS" starttime="20241016 10:49:48.802" endtime="20241016 10:49:48.836"/>
+</kw>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>name:login-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:48.838" level="INFO">Clicking button 'name:login-button'.</msg>
+<status status="PASS" starttime="20241016 10:49:48.837" endtime="20241016 10:49:49.196"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:48.614" endtime="20241016 10:49:49.198"/>
+</kw>
+<kw name="Select Library Location">
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>xpath=//span[@id="select2-dynamicmodel-location-container"]</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20241016 10:49:49.199" endtime="20241016 10:49:50.529"/>
+</kw>
+<kw name="Click Element" library="RPA.Browser.Selenium">
+<arg>xpath=//span[@id="select2-dynamicmodel-location-container"]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:50.530" level="INFO">Clicking element 'xpath=//span[@id="select2-dynamicmodel-location-container"]'.</msg>
+<status status="PASS" starttime="20241016 10:49:50.529" endtime="20241016 10:49:50.792"/>
+</kw>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>xpath=//li[contains(text(), 'Perpustakaan Pusat')]</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20241016 10:49:50.792" endtime="20241016 10:49:50.815"/>
+</kw>
+<kw name="Click Element" library="RPA.Browser.Selenium">
+<arg>xpath=//li[contains(text(), 'Perpustakaan Pusat')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:50.816" level="INFO">Clicking element 'xpath=//li[contains(text(), 'Perpustakaan Pusat')]'.</msg>
+<status status="PASS" starttime="20241016 10:49:50.815" endtime="20241016 10:49:51.536"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:49.198" endtime="20241016 10:49:51.536"/>
+</kw>
+<kw name="Click Submit Button">
+<kw name="Click Button When Visible" library="RPA.Browser.Selenium">
+<arg>//button[@class="btn btn-primary btn-block btn-flat button_login"]</arg>
+<doc>Click button identified by ``locator``, once it becomes visible.</doc>
+<msg timestamp="20241016 10:49:51.567" level="INFO">Clicking button '//button[@class="btn btn-primary btn-block btn-flat button_login"]'.</msg>
+<status status="PASS" starttime="20241016 10:49:51.538" endtime="20241016 10:49:53.130"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:51.537" endtime="20241016 10:49:53.131"/>
+</kw>
+<kw name="Navigate to Entri Katalog (RDA)">
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>xpath=//li[@class="treeview"]/a[contains(@href, '/pengkatalogan/katalog/index')]</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20241016 10:49:53.132" endtime="20241016 10:49:53.180"/>
+</kw>
+<kw name="Click Element" library="RPA.Browser.Selenium">
+<arg>xpath=//li[@class="treeview"]/a[contains(@href, '/pengkatalogan/katalog/index')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:53.181" level="INFO">Clicking element 'xpath=//li[@class="treeview"]/a[contains(@href, '/pengkatalogan/katalog/index')]'.</msg>
+<status status="PASS" starttime="20241016 10:49:53.180" endtime="20241016 10:49:53.429"/>
+</kw>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>xpath=//li/a[@href='/inlislite3/backend/pengkatalogan/katalog/create?for=cat&amp;rda=1']</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20241016 10:49:53.430" endtime="20241016 10:49:53.451"/>
+</kw>
+<kw name="Click Element" library="RPA.Browser.Selenium">
+<arg>xpath=//li/a[@href='/inlislite3/backend/pengkatalogan/katalog/create?for=cat&amp;rda=1']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:53.452" level="INFO">Clicking element 'xpath=//li/a[@href='/inlislite3/backend/pengkatalogan/katalog/create?for=cat&amp;rda=1']'.</msg>
+<status status="PASS" starttime="20241016 10:49:53.451" endtime="20241016 10:49:54.480"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:53.131" endtime="20241016 10:49:54.480"/>
+</kw>
+<kw name="Input Book Data">
+<arg>${JUDUL}</arg>
+<arg>${PENGARANG}</arg>
+<arg>${PENERBITAN}</arg>
+<arg>${DESC}</arg>
+<arg>${ISBN}</arg>
+<arg>${KOTA}</arg>
+<arg>${EDITOR}</arg>
+<arg>${SINOPSIS}</arg>
+<arg>${KEYWORD}</arg>
+<arg>${ILUSTRATOR}</arg>
+<kw name="Split String" library="String">
+<var>${pengarang_list}</var>
+<arg>${pengarang}</arg>
+<arg>;</arg>
+<doc>Splits the ``string`` using ``separator`` as a delimiter string.</doc>
+<msg timestamp="20241016 10:49:54.483" level="INFO">${pengarang_list} = ['Butler', ' David', ' John']</msg>
+<status status="PASS" starttime="20241016 10:49:54.482" endtime="20241016 10:49:54.483"/>
+</kw>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>id:TagsValue_245</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20241016 10:49:54.483" endtime="20241016 10:49:54.548"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_245').value += '${judul}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_245').value += '${judul}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.550" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_245').value += 'Design to grow : how Coca-Cola learned to combine scale and agility';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.549" endtime="20241016 10:49:54.556"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.548" endtime="20241016 10:49:54.557"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_100').value += '${pengarang_list[0]}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_100').value += '${pengarang_list[0]}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.559" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_100').value += 'Butler';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.557" endtime="20241016 10:49:54.567"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.557" endtime="20241016 10:49:54.567"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_264_0').value += '${penerbitan}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_264_0').value += '${penerbitan}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.569" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_264_0').value += 'The Library of Congress has cataloged the hardcover edition as follows';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.568" endtime="20241016 10:49:54.580"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.568" endtime="20241016 10:49:54.580"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_300').value += '${desc}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_300').value += '${desc}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.582" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_300').value += 'The Library of Congress has cataloged the hardcover edition as follows';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.581" endtime="20241016 10:49:54.586"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.580" endtime="20241016 10:49:54.587"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_020_0').value += '${isbn}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_020_0').value += '${isbn}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.590" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_020_0').value += '9781451671827';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.588" endtime="20241016 10:49:54.603"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.587" endtime="20241016 10:49:54.603"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_043').value += '${kota}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_043').value += '${kota}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.606" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_043').value += 'Avenue of the Americas, New York';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.605" endtime="20241016 10:49:54.618"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.604" endtime="20241016 10:49:54.619"/>
+</kw>
+<kw name="Get Length" library="BuiltIn">
+<var>${jumlah_pengarang}</var>
+<arg>${pengarang_list}</arg>
+<doc>Returns and logs the length of the given item as an integer.</doc>
+<msg timestamp="20241016 10:49:54.620" level="INFO">Length is 3</msg>
+<msg timestamp="20241016 10:49:54.620" level="INFO">${jumlah_pengarang} = 3</msg>
+<status status="PASS" starttime="20241016 10:49:54.619" endtime="20241016 10:49:54.620"/>
+</kw>
+<for flavor="IN RANGE">
+<var>${index}</var>
+<value>1</value>
+<value>${jumlah_pengarang}</value>
+<iter>
+<var name="${index}">1</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${pengarang_ke_n}</var>
+<arg>${pengarang_list[${index}]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20241016 10:49:54.624" level="INFO">${pengarang_ke_n} =  David</msg>
+<status status="PASS" starttime="20241016 10:49:54.622" endtime="20241016 10:49:54.624"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_700_0').value += '${pengarang_ke_n};';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_700_0').value += '${pengarang_ke_n};';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.627" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_700_0').value += ' David;';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.625" endtime="20241016 10:49:54.632"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.625" endtime="20241016 10:49:54.633"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.621" endtime="20241016 10:49:54.634"/>
+</iter>
+<iter>
+<var name="${index}">2</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${pengarang_ke_n}</var>
+<arg>${pengarang_list[${index}]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20241016 10:49:54.637" level="INFO">${pengarang_ke_n} =  John</msg>
+<status status="PASS" starttime="20241016 10:49:54.635" endtime="20241016 10:49:54.637"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_700_0').value += '${pengarang_ke_n};';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_700_0').value += '${pengarang_ke_n};';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.640" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_700_0').value += ' John;';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.639" endtime="20241016 10:49:54.654"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.638" endtime="20241016 10:49:54.655"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.634" endtime="20241016 10:49:54.655"/>
+</iter>
+<status status="PASS" starttime="20241016 10:49:54.621" endtime="20241016 10:49:54.655"/>
+</for>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_700_0').value += '${editor};';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_700_0').value += '${editor};';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.658" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_700_0').value += 'Interior design by Ellen R. Sasahara;';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.657" endtime="20241016 10:49:54.669"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.656" endtime="20241016 10:49:54.669"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_700_0').value += '${ilustrator};';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_700_0').value += '${ilustrator};';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.672" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_700_0').value += 'bowo tiktok;';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.670" endtime="20241016 10:49:54.684"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.669" endtime="20241016 10:49:54.684"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_520_0').value += '${sinopsis}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_520_0').value += '${sinopsis}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.686" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_520_0').value += 'earn how the worlds largest beverage brand uses design to grow its busiess by combining the advantages of alarge scale company with the agility of a nimble startup. "From a fledging startup in Nepal. to a ceritury-old.uitina- tional in New York, scale &amp; agility are two qualities that are bssenfavery company success". ';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.685" endtime="20241016 10:49:54.699"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.685" endtime="20241016 10:49:54.699"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<arg>Execute JavaScript</arg>
+<arg>document.getElementById('TagsValue_650_0').value += '${keyword}';</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.getElementById('TagsValue_650_0').value += '${keyword}';</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:54.700" level="INFO">Executing JavaScript:
+document.getElementById('TagsValue_650_0').value += 'company, nepal';
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:54.700" endtime="20241016 10:49:54.718"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.699" endtime="20241016 10:49:54.718"/>
+</kw>
+<kw name="Run Keyword And Continue On Failure" library="BuiltIn">
+<arg>Click Button</arg>
+<arg>id:btnSave2</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>id:btnSave2</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:54.721" level="INFO">Clicking button 'id:btnSave2'.</msg>
+<status status="PASS" starttime="20241016 10:49:54.719" endtime="20241016 10:49:55.003"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.718" endtime="20241016 10:49:55.003"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>Form telah disubmit.</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20241016 10:49:55.003" endtime="20241016 10:49:55.004"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:54.481" endtime="20241016 10:49:55.005"/>
+</kw>
+<kw name="Logout Website">
+<kw name="Wait Until Element Is Not Visible" library="RPA.Browser.Selenium">
+<arg>css=div.modal-backdrop</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is not visible.</doc>
+<status status="PASS" starttime="20241016 10:49:55.006" endtime="20241016 10:49:55.243"/>
+</kw>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>swal.close();</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:55.245" level="INFO">Executing JavaScript:
+swal.close();
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:55.243" endtime="20241016 10:49:55.257"/>
+</kw>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>xpath=//li[@class="dropdown user user-menu"]/a[contains(@class, 'dropdown-toggle')]</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20241016 10:49:55.257" endtime="20241016 10:49:55.282"/>
+</kw>
+<kw name="Click Element" library="RPA.Browser.Selenium">
+<arg>xpath=//li[@class="dropdown user user-menu"]/a[contains(@class, 'dropdown-toggle')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20241016 10:49:55.283" level="INFO">Clicking element 'xpath=//li[@class="dropdown user user-menu"]/a[contains(@class, 'dropdown-toggle')]'.</msg>
+<status status="PASS" starttime="20241016 10:49:55.283" endtime="20241016 10:49:58.066"/>
+</kw>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<var>${logout_element}</var>
+<arg>return document.querySelector("a[href='/inlislite3/backend/site/logout']");</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:58.068" level="INFO">Executing JavaScript:
+return document.querySelector("a[href='/inlislite3/backend/site/logout']");
+Without any arguments.</msg>
+<msg timestamp="20241016 10:49:58.114" level="INFO">${logout_element} = &lt;selenium.webdriver.remote.webelement.WebElement (session="6d5a15bf-898c-41eb-a927-6b103b93d414", element="c9b0b40a-4ff7-4005-b4ed-6da5a5af258d")&gt;</msg>
+<status status="PASS" starttime="20241016 10:49:58.066" endtime="20241016 10:49:58.114"/>
+</kw>
+<if>
+<branch type="IF" condition="'${logout_element}' == None">
+<kw name="Fail" library="BuiltIn">
+<arg>Logout link not found in the DOM</arg>
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<status status="NOT RUN" starttime="20241016 10:49:58.115" endtime="20241016 10:49:58.115"/>
+</kw>
+<status status="NOT RUN" starttime="20241016 10:49:58.114" endtime="20241016 10:49:58.115"/>
+</branch>
+<status status="PASS" starttime="20241016 10:49:58.114" endtime="20241016 10:49:58.115"/>
+</if>
+<kw name="Execute Javascript" library="RPA.Browser.Selenium">
+<arg>document.querySelector("a[href='/inlislite3/backend/site/logout']").click();</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<msg timestamp="20241016 10:49:58.116" level="INFO">Executing JavaScript:
+document.querySelector("a[href='/inlislite3/backend/site/logout']").click();
+Without any arguments.</msg>
+<status status="PASS" starttime="20241016 10:49:58.116" endtime="20241016 10:49:58.161"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:55.006" endtime="20241016 10:49:58.161"/>
+</kw>
+<kw name="Close Browser">
+<kw name="Close All Browsers" library="RPA.Browser.Selenium">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" starttime="20241016 10:49:58.162" endtime="20241016 10:50:01.406"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:58.162" endtime="20241016 10:50:01.406"/>
+</kw>
+<status status="PASS" starttime="20241016 10:49:39.571" endtime="20241016 10:50:01.407"/>
+</test>
+<status status="PASS" starttime="20241016 10:49:38.001" endtime="20241016 10:50:01.410"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="2" fail="0" skip="0" id="s1" name="Tasks">Tasks</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

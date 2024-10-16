@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.14 on win32)" generated="20241014 13:18:38.137" rpa="false" schemaversion="4">
+<suite id="s1" name="Robot Interactive Console" source="c:\Users\dafiq\.vscode\extensions\robocorp.robotframework-lsp-1.12.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
+<test id="s1-t1" name="Default Task/Test" line="5">
+<kw name="Interpreter Main Loop" library="MainLoop">
+<kw name="Open Browser">
+<arg>${URL}</arg>
+<arg>firefox</arg>
+<msg timestamp="20241014 13:18:38.874" level="FAIL">No keyword with name 'Open Browser' found.</msg>
+<status status="FAIL" starttime="20241014 13:18:38.874" endtime="20241014 13:18:38.874"/>
+</kw>
+<kw name="Login website">
+<status status="NOT RUN" starttime="20241014 13:18:38.875" endtime="20241014 13:18:38.875"/>
+</kw>
+<kw name="Select Library Location">
+<status status="NOT RUN" starttime="20241014 13:18:38.877" endtime="20241014 13:18:38.877"/>
+</kw>
+<kw name="Click Submit Button">
+<status status="NOT RUN" starttime="20241014 13:18:38.879" endtime="20241014 13:18:38.879"/>
+</kw>
+<kw name="Navigate to Entri Katalog">
+<status status="NOT RUN" starttime="20241014 13:18:38.880" endtime="20241014 13:18:38.880"/>
+</kw>
+<kw name="Input Book Data">
+<arg>${JUDUL}</arg>
+<arg>${PENGARANG}</arg>
+<arg>${PENERBITAN}</arg>
+<arg>${DESC}</arg>
+<arg>${ISBN}</arg>
+<arg>${KOTA}</arg>
+<arg>${EDITOR}</arg>
+<arg>${SINOPSIS}</arg>
+<arg>${KEYWORD}</arg>
+<status status="NOT RUN" starttime="20241014 13:18:38.883" endtime="20241014 13:18:38.883"/>
+</kw>
+<kw name="Logout website">
+<status status="NOT RUN" starttime="20241014 13:18:38.884" endtime="20241014 13:18:38.884"/>
+</kw>
+<kw name="Close Browser">
+<status status="NOT RUN" starttime="20241014 13:18:38.886" endtime="20241014 13:18:38.886"/>
+</kw>
+<status status="PASS" starttime="20241014 13:18:38.183" endtime="20241014 13:18:43.602"/>
+</kw>
+<status status="PASS" starttime="20241014 13:18:38.183" endtime="20241014 13:18:43.602"/>
+</test>
+<status status="PASS" starttime="20241014 13:18:38.139" endtime="20241014 13:18:43.603"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Robot Interactive Console">Robot Interactive Console</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
